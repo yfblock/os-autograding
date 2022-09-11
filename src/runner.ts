@@ -209,6 +209,8 @@ export const runAll = async (tests: Array<Test>, cwd: string): Promise<void> => 
 
   let failed = false
 
+  log(`tasks: ${tests.length}`)
+
   for (const test of tests) {
     try {
       if (test.points) {
