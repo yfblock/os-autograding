@@ -12291,16 +12291,29 @@ exports.runAll = async (testConfig, cwd) => {
     let availablePoints = 0;
     // https://help.github.com/en/actions/reference/development-tools-for-github-actions#stop-and-start-log-commands-stop-commands
     log('::os autograding::');
-    let fileValue = fs_1.readFileSync(path_1.default.join(cwd, testConfig.outputFile)).toString();
-    console.log(fileValue);
-    for (const test of testConfig.tests) {
-        availablePoints += test.points;
-        if (test.contains) {
-            if (fileValue.indexOf(test.contains) >= 0) {
-                points += 2;
+    const fileValue = fs_1.readFileSync(path_1.default.join(cwd, testConfig.outputFile)).toString();
+    let gradeFiles = fs_1.readdirSync(cwd);
+    for (let i = 0; i < gradeFiles.length; i++) {
+        let scriptFilePath = path_1.default.join(cwd, gradeFiles[i]);
+        if (scriptFilePath.endsWith(".js")) {
+            let scriptFile = await Promise.resolve().then(() => __importStar(require(scriptFilePath)));
+            for (let i = 0; i < scriptFile.points.length; i++) {
+                availablePoints += scriptFile.points[i].available;
+            }
+            let result = scriptFile.judge(fileValue);
+            for (let i = 0; i < result.length; i++) {
+                points += result[i].points;
             }
         }
     }
+    // for (const test of testConfig.tests) {
+    //   availablePoints += test.points
+    //   if (test.contains) {
+    //     if (fileValue.indexOf(test.contains) >= 0) {
+    //       points += 2
+    //     }
+    //   }
+    // }
     // for (const test of tests) {
     //   try {
     //     if (test.points) {
