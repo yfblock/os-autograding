@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import {setCheckRunOutput} from './output'
 import * as os from 'os'
 import chalk from 'chalk'
-import {readFileSync} from 'fs'
+import {readFileSync, readdirSync} from 'fs'
 import path from 'path'
 
 const color = new chalk.Instance({level: 1})
@@ -60,16 +60,31 @@ export const runAll = async (testConfig: TestConfig, cwd: string): Promise<void>
 
   const fileValue = readFileSync(path.join(cwd, testConfig.outputFile)).toString()
 
-  console.log(fileValue)
-  for (const test of testConfig.tests) {
-    availablePoints += test.points
-
-    if (test.contains) {
-      if (fileValue.indexOf(test.contains) >= 0) {
-        points += 2
+  let gradeFiles = readdirSync(cwd);
+  for(let i = 0;i < gradeFiles.length; i++) {
+    let scriptFilePath = path.join(cwd, gradeFiles[i]);
+    if(scriptFilePath.endsWith(".js")) {
+      let scriptFile = await import(scriptFilePath);
+      for(let i = 0; i < scriptFile.points.length; i++) {
+        availablePoints += scriptFile.points[i].available
+      }
+      
+      let result = scriptFile.judge(fileValue);
+      for(let i = 0; i < result.length; i++) {
+        points += result[i].points
       }
     }
   }
+  log(fileValue)
+  // for (const test of testConfig.tests) {
+  //   availablePoints += test.points
+
+  //   if (test.contains) {
+  //     if (fileValue.indexOf(test.contains) >= 0) {
+  //       points += 2
+  //     }
+  //   }
+  // }
   // for (const test of tests) {
   //   try {
   //     if (test.points) {

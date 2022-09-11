@@ -6,7 +6,8 @@ nock.disableNetConnect()
 // Instead, bind to stdout and hide all debug messages
 const processStdoutWrite = process.stdout.write.bind(process.stdout)
 process.stdout.write = (str, encoding, cb) => {
-  return false
+  // return false
+  processStdoutWrite(str, encoding, cb)
 }
 
 const processStderrWrite = process.stderr.write.bind(process.stderr)
