@@ -228,7 +228,7 @@ export const runAll = async (tests: Array<Test>, cwd: string): Promise<void> => 
       failed = true
       log('')
       log(color.red(`❌ ${test.name}`))
-      core.setFailed(error.message)
+      // core.setFailed(error.message)
     }
   }
 
