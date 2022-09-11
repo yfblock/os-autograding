@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import {setCheckRunOutput} from './output'
 import * as os from 'os'
 import chalk from 'chalk'
-import { readFileSync } from 'fs'
+import {readFileSync} from 'fs'
 import path from 'path'
 
 const color = new chalk.Instance({level: 1})
@@ -58,15 +58,15 @@ export const runAll = async (testConfig: TestConfig, cwd: string): Promise<void>
   // https://help.github.com/en/actions/reference/development-tools-for-github-actions#stop-and-start-log-commands-stop-commands
   log('::os autograding::')
 
-  let fileValue = readFileSync(path.join(cwd, testConfig.outputFile)).toString();
+  const fileValue = readFileSync(path.join(cwd, testConfig.outputFile)).toString()
 
   console.log(fileValue)
-  for(const test of testConfig.tests) {
-    availablePoints += test.points;
+  for (const test of testConfig.tests) {
+    availablePoints += test.points
 
-    if(test.contains) {
+    if (test.contains) {
       if (fileValue.indexOf(test.contains) >= 0) {
-        points += 2;
+        points += 2
       }
     }
   }

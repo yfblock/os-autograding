@@ -849,52 +849,6 @@ exports.setCheckRunOutput = async (text) => {
 
 /***/ }),
 
-/***/ 62:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "v1", {
-  enumerable: true,
-  get: function () {
-    return _v.default;
-  }
-});
-Object.defineProperty(exports, "v3", {
-  enumerable: true,
-  get: function () {
-    return _v2.default;
-  }
-});
-Object.defineProperty(exports, "v4", {
-  enumerable: true,
-  get: function () {
-    return _v3.default;
-  }
-});
-Object.defineProperty(exports, "v5", {
-  enumerable: true,
-  get: function () {
-    return _v4.default;
-  }
-});
-
-var _v = _interopRequireDefault(__webpack_require__(893));
-
-var _v2 = _interopRequireDefault(__webpack_require__(209));
-
-var _v3 = _interopRequireDefault(__webpack_require__(733));
-
-var _v4 = _interopRequireDefault(__webpack_require__(384));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ }),
-
 /***/ 68:
 /***/ (function(__unusedmodule, exports) {
 
@@ -2952,110 +2906,10 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ 209:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _v = _interopRequireDefault(__webpack_require__(212));
-
-var _md = _interopRequireDefault(__webpack_require__(803));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const v3 = (0, _v.default)('v3', 0x30, _md.default);
-var _default = v3;
-exports.default = _default;
-module.exports = exports.default;
-
-/***/ }),
-
 /***/ 211:
 /***/ (function(module) {
 
 module.exports = require("https");
-
-/***/ }),
-
-/***/ 212:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-exports.URL = exports.DNS = void 0;
-
-var _bytesToUuid = _interopRequireDefault(__webpack_require__(390));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function uuidToBytes(uuid) {
-  // Note: We assume we're being passed a valid uuid string
-  var bytes = [];
-  uuid.replace(/[a-fA-F0-9]{2}/g, function (hex) {
-    bytes.push(parseInt(hex, 16));
-  });
-  return bytes;
-}
-
-function stringToBytes(str) {
-  str = unescape(encodeURIComponent(str)); // UTF8 escape
-
-  var bytes = new Array(str.length);
-
-  for (var i = 0; i < str.length; i++) {
-    bytes[i] = str.charCodeAt(i);
-  }
-
-  return bytes;
-}
-
-const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
-exports.DNS = DNS;
-const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
-exports.URL = URL;
-
-function _default(name, version, hashfunc) {
-  var generateUUID = function (value, namespace, buf, offset) {
-    var off = buf && offset || 0;
-    if (typeof value == 'string') value = stringToBytes(value);
-    if (typeof namespace == 'string') namespace = uuidToBytes(namespace);
-    if (!Array.isArray(value)) throw TypeError('value must be an array of bytes');
-    if (!Array.isArray(namespace) || namespace.length !== 16) throw TypeError('namespace must be uuid string or an Array of 16 byte values'); // Per 4.3
-
-    var bytes = hashfunc(namespace.concat(value));
-    bytes[6] = bytes[6] & 0x0f | version;
-    bytes[8] = bytes[8] & 0x3f | 0x80;
-
-    if (buf) {
-      for (var idx = 0; idx < 16; ++idx) {
-        buf[off + idx] = bytes[idx];
-      }
-    }
-
-    return buf || (0, _bytesToUuid.default)(bytes);
-  }; // Function#name is not settable on some platforms (#270)
-
-
-  try {
-    generateUUID.name = name;
-  } catch (err) {} // For CommonJS default export support
-
-
-  generateUUID.DNS = DNS;
-  generateUUID.URL = URL;
-  return generateUUID;
-}
 
 /***/ }),
 
@@ -4234,30 +4088,6 @@ function deprecate (message) {
 
 /***/ }),
 
-/***/ 384:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _v = _interopRequireDefault(__webpack_require__(212));
-
-var _sha = _interopRequireDefault(__webpack_require__(498));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const v5 = (0, _v.default)('v5', 0x50, _sha.default);
-var _default = v5;
-exports.default = _default;
-module.exports = exports.default;
-
-/***/ }),
-
 /***/ 385:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -4693,40 +4523,6 @@ function readShebang(command) {
 
 module.exports = readShebang;
 
-
-/***/ }),
-
-/***/ 390:
-/***/ (function(module, exports) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-var byteToHex = [];
-
-for (var i = 0; i < 256; ++i) {
-  byteToHex[i] = (i + 0x100).toString(16).substr(1);
-}
-
-function bytesToUuid(buf, offset) {
-  var i = offset || 0;
-  var bth = byteToHex; // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-
-  return [bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], '-', bth[buf[i++]], bth[buf[i++]], '-', bth[buf[i++]], bth[buf[i++]], '-', bth[buf[i++]], bth[buf[i++]], '-', bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], bth[buf[i++]], bth[buf[i++]]].join('');
-}
-
-var _default = bytesToUuid;
-exports.default = _default;
-module.exports = exports.default;
 
 /***/ }),
 
@@ -8260,37 +8056,6 @@ exports.RequestError = RequestError;
 
 /***/ }),
 
-/***/ 498:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _crypto = _interopRequireDefault(__webpack_require__(417));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function sha1(bytes) {
-  if (Array.isArray(bytes)) {
-    bytes = Buffer.from(bytes);
-  } else if (typeof bytes === 'string') {
-    bytes = Buffer.from(bytes, 'utf8');
-  }
-
-  return _crypto.default.createHash('sha1').update(bytes).digest();
-}
-
-var _default = sha1;
-exports.default = _default;
-module.exports = exports.default;
-
-/***/ }),
-
 /***/ 506:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -11389,54 +11154,6 @@ module.exports = (promise, onFinally) => {
 
 /***/ }),
 
-/***/ 733:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _rng = _interopRequireDefault(__webpack_require__(844));
-
-var _bytesToUuid = _interopRequireDefault(__webpack_require__(390));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function v4(options, buf, offset) {
-  var i = buf && offset || 0;
-
-  if (typeof options == 'string') {
-    buf = options === 'binary' ? new Array(16) : null;
-    options = null;
-  }
-
-  options = options || {};
-
-  var rnds = options.random || (options.rng || _rng.default)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-
-
-  rnds[6] = rnds[6] & 0x0f | 0x40;
-  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
-
-  if (buf) {
-    for (var ii = 0; ii < 16; ++ii) {
-      buf[i + ii] = rnds[ii];
-    }
-  }
-
-  return buf || (0, _bytesToUuid.default)(rnds);
-}
-
-var _default = v4;
-exports.default = _default;
-module.exports = exports.default;
-
-/***/ }),
-
 /***/ 742:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -12095,132 +11812,6 @@ isStream.transform = function (stream) {
 
 /***/ }),
 
-/***/ 791:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-"use strict";
-
-
-var childProcess = __webpack_require__(129);
-var spawn = childProcess.spawn;
-var exec = childProcess.exec;
-
-module.exports = function (pid, signal, callback) {
-    if (typeof signal === 'function' && callback === undefined) {
-        callback = signal;
-        signal = undefined;
-    }
-
-    pid = parseInt(pid);
-    if (Number.isNaN(pid)) {
-        if (callback) {
-            return callback(new Error("pid must be a number"));
-        } else {
-            throw new Error("pid must be a number");
-        }
-    }
-
-    var tree = {};
-    var pidsToProcess = {};
-    tree[pid] = [];
-    pidsToProcess[pid] = 1;
-
-    switch (process.platform) {
-    case 'win32':
-        exec('taskkill /pid ' + pid + ' /T /F', callback);
-        break;
-    case 'darwin':
-        buildProcessTree(pid, tree, pidsToProcess, function (parentPid) {
-          return spawn('pgrep', ['-P', parentPid]);
-        }, function () {
-            killAll(tree, signal, callback);
-        });
-        break;
-    // case 'sunos':
-    //     buildProcessTreeSunOS(pid, tree, pidsToProcess, function () {
-    //         killAll(tree, signal, callback);
-    //     });
-    //     break;
-    default: // Linux
-        buildProcessTree(pid, tree, pidsToProcess, function (parentPid) {
-          return spawn('ps', ['-o', 'pid', '--no-headers', '--ppid', parentPid]);
-        }, function () {
-            killAll(tree, signal, callback);
-        });
-        break;
-    }
-};
-
-function killAll (tree, signal, callback) {
-    var killed = {};
-    try {
-        Object.keys(tree).forEach(function (pid) {
-            tree[pid].forEach(function (pidpid) {
-                if (!killed[pidpid]) {
-                    killPid(pidpid, signal);
-                    killed[pidpid] = 1;
-                }
-            });
-            if (!killed[pid]) {
-                killPid(pid, signal);
-                killed[pid] = 1;
-            }
-        });
-    } catch (err) {
-        if (callback) {
-            return callback(err);
-        } else {
-            throw err;
-        }
-    }
-    if (callback) {
-        return callback();
-    }
-}
-
-function killPid(pid, signal) {
-    try {
-        process.kill(parseInt(pid, 10), signal);
-    }
-    catch (err) {
-        if (err.code !== 'ESRCH') throw err;
-    }
-}
-
-function buildProcessTree (parentPid, tree, pidsToProcess, spawnChildProcessesList, cb) {
-    var ps = spawnChildProcessesList(parentPid);
-    var allData = '';
-    ps.stdout.on('data', function (data) {
-        var data = data.toString('ascii');
-        allData += data;
-    });
-
-    var onClose = function (code) {
-        delete pidsToProcess[parentPid];
-
-        if (code != 0) {
-            // no more parent processes
-            if (Object.keys(pidsToProcess).length == 0) {
-                cb();
-            }
-            return;
-        }
-
-        allData.match(/\d+/g).forEach(function (pid) {
-          pid = parseInt(pid, 10);
-          tree[parentPid].push(pid);
-          tree[pid] = [];
-          pidsToProcess[pid] = 1;
-          buildProcessTree(pid, tree, pidsToProcess, spawnChildProcessesList, cb);
-        });
-    };
-
-    ps.on('close', onClose);
-}
-
-
-/***/ }),
-
 /***/ 794:
 /***/ (function(module) {
 
@@ -12251,37 +11842,6 @@ function getUserAgent() {
 exports.getUserAgent = getUserAgent;
 //# sourceMappingURL=index.js.map
 
-
-/***/ }),
-
-/***/ 803:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _crypto = _interopRequireDefault(__webpack_require__(417));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function md5(bytes) {
-  if (Array.isArray(bytes)) {
-    bytes = Buffer.from(bytes);
-  } else if (typeof bytes === 'string') {
-    bytes = Buffer.from(bytes, 'utf8');
-  }
-
-  return _crypto.default.createHash('md5').update(bytes).digest();
-}
-
-var _default = md5;
-exports.default = _default;
-module.exports = exports.default;
 
 /***/ }),
 
@@ -12692,14 +12252,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.runAll = exports.run = exports.TestOutputError = exports.TestTimeoutError = exports.TestError = void 0;
-const child_process_1 = __webpack_require__(129);
-const tree_kill_1 = __importDefault(__webpack_require__(791));
-const uuid_1 = __webpack_require__(62);
+exports.runAll = exports.TestOutputError = exports.TestTimeoutError = exports.TestError = void 0;
 const core = __importStar(__webpack_require__(470));
 const output_1 = __webpack_require__(52);
 const os = __importStar(__webpack_require__(87));
 const chalk_1 = __importDefault(__webpack_require__(843));
+const fs_1 = __webpack_require__(747);
+const path_1 = __importDefault(__webpack_require__(622));
 const color = new chalk_1.default.Instance({ level: 1 });
 class TestError extends Error {
     constructor(message) {
@@ -12727,180 +12286,54 @@ exports.TestOutputError = TestOutputError;
 const log = (text) => {
     process.stdout.write(text + os.EOL);
 };
-const normalizeLineEndings = (text) => {
-    return text.replace(/\r\n/gi, '\n').trim();
-};
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const indent = (text) => {
-    let str = '' + new String(text);
-    str = str.replace(/\r\n/gim, '\n').replace(/\n/gim, '\n  ');
-    return str;
-};
-const waitForExit = async (child, timeout) => {
-    // eslint-disable-next-line no-undef
-    return new Promise((resolve, reject) => {
-        let timedOut = false;
-        const exitTimeout = setTimeout(() => {
-            timedOut = true;
-            reject(new TestTimeoutError(`Setup timed out in ${timeout} milliseconds`));
-            tree_kill_1.default(child.pid);
-        }, timeout);
-        child.once('exit', (code, signal) => {
-            if (timedOut)
-                return;
-            clearTimeout(exitTimeout);
-            if (code === 0) {
-                resolve(undefined);
-            }
-            else {
-                reject(new TestError(`Error: Exit with code: ${code} and signal: ${signal}`));
-            }
-        });
-        child.once('error', (error) => {
-            if (timedOut)
-                return;
-            clearTimeout(exitTimeout);
-            reject(error);
-        });
-    });
-};
-const runSetup = async (test, cwd, timeout) => {
-    if (!test.setup || test.setup === '') {
-        return;
-    }
-    const setup = child_process_1.spawn(test.setup, {
-        cwd,
-        shell: true,
-        env: {
-            PATH: process.env['PATH'],
-            FORCE_COLOR: 'true',
-        },
-    });
-    // Start with a single new line
-    process.stdout.write(indent('\n'));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setup.stdout.on('data', chunk => {
-        process.stdout.write(indent(chunk));
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setup.stderr.on('data', chunk => {
-        process.stderr.write(indent(chunk));
-    });
-    await waitForExit(setup, timeout);
-};
-const runCommand = async (test, cwd, timeout) => {
-    const child = child_process_1.spawn(test.run, {
-        cwd,
-        shell: true,
-        env: {
-            PATH: process.env['PATH'],
-            FORCE_COLOR: 'true',
-        },
-    });
-    let output = '';
-    // Start with a single new line
-    process.stdout.write(indent('\n'));
-    child.stdout.on('data', chunk => {
-        process.stdout.write(indent(chunk));
-        output += chunk;
-    });
-    child.stderr.on('data', chunk => {
-        process.stderr.write(indent(chunk));
-    });
-    // Preload the inputs
-    if (test.input && test.input !== '') {
-        child.stdin.write(test.input);
-        child.stdin.end();
-    }
-    await waitForExit(child, timeout);
-    // Eventually work off the the test type
-    if ((!test.output || test.output == '') && (!test.input || test.input == '')) {
-        return;
-    }
-    const expected = normalizeLineEndings(test.output || '');
-    const actual = normalizeLineEndings(output);
-    switch (test.comparison) {
-        case 'exact':
-            if (actual != expected) {
-                throw new TestOutputError(`The output for test ${test.name} did not match`, expected, actual);
-            }
-            break;
-        case 'regex':
-            // Note: do not use expected here
-            if (!actual.match(new RegExp(test.output || ''))) {
-                throw new TestOutputError(`The output for test ${test.name} did not match`, test.output || '', actual);
-            }
-            break;
-        default:
-            // The default comparison mode is 'included'
-            if (!actual.includes(expected)) {
-                throw new TestOutputError(`The output for test ${test.name} did not match`, expected, actual);
-            }
-            break;
-    }
-};
-exports.run = async (test, cwd) => {
-    // Timeouts are in minutes, but need to be in ms
-    let timeout = (test.timeout || 1) * 60 * 1000 || 30000;
-    const start = process.hrtime();
-    await runSetup(test, cwd, timeout);
-    const elapsed = process.hrtime(start);
-    // Subtract the elapsed seconds (0) and nanoseconds (1) to find the remaining timeout
-    timeout -= Math.floor(elapsed[0] * 1000 + elapsed[1] / 1000000);
-    await runCommand(test, cwd, timeout);
-};
-exports.runAll = async (tests, cwd) => {
+exports.runAll = async (testConfig, cwd) => {
     let points = 0;
     let availablePoints = 0;
-    let hasPoints = false;
     // https://help.github.com/en/actions/reference/development-tools-for-github-actions#stop-and-start-log-commands-stop-commands
-    const token = uuid_1.v4();
-    log('');
-    log(`::stop-commands::${token}`);
-    log('');
-    let failed = false;
-    for (const test of tests) {
-        try {
-            if (test.points) {
-                hasPoints = true;
-                availablePoints += test.points;
+    log('::os autograding::');
+    let fileValue = fs_1.readFileSync(path_1.default.join(cwd, testConfig.outputFile)).toString();
+    console.log(fileValue);
+    for (const test of testConfig.tests) {
+        availablePoints += test.points;
+        if (test.contains) {
+            if (fileValue.indexOf(test.contains) >= 0) {
+                points += 2;
             }
-            log(color.cyan(`📝 ${test.name}`));
-            log('');
-            await exports.run(test, cwd);
-            log('');
-            log(color.green(`✅ ${test.name}`));
-            log(``);
-            if (test.points) {
-                points += test.points;
-            }
-        }
-        catch (error) {
-            failed = true;
-            log('');
-            log(color.red(`❌ ${test.name}`));
-            // core.setFailed(error.message)
         }
     }
+    // for (const test of tests) {
+    //   try {
+    //     if (test.points) {
+    //       availablePoints += test.points
+    //     }
+    //     log(color.cyan(`📝 ${test.name}`))
+    //     log('')
+    //     await run(test, cwd)
+    //     log('')
+    //     log(color.green(`✅ ${test.name}`))
+    //     log(``)
+    //     if (test.points) {
+    //       points += test.points
+    //     }
+    //   } catch (error) {
+    //     failed = true
+    //     log('')
+    //     log(color.red(`❌ ${test.name}`))
+    //     // core.setFailed(error.message)
+    //   }
+    // }
     // Restart command processing
-    log('');
-    log(`::${token}::`);
-    if (failed) {
-        // We need a good failure experience
-    }
-    else {
+    // Set the number of points
+    const text = `Points ${points}/${availablePoints}`;
+    log(color.bold.bgCyan.black(text));
+    core.setOutput('Points', `${points}/${availablePoints}`);
+    await output_1.setCheckRunOutput(text);
+    if (points == availablePoints) {
         log('');
         log(color.green('All tests passed'));
         log('');
         log('✨🌟💖💎🦄💎💖🌟✨🌟💖💎🦄💎💖🌟✨');
         log('');
-    }
-    // Set the number of points
-    if (hasPoints) {
-        const text = `Points ${points}/${availablePoints}`;
-        log(color.bold.bgCyan.black(text));
-        core.setOutput('Points', `${points}/${availablePoints}`);
-        await output_1.setCheckRunOutput(text);
     }
 };
 
@@ -26352,29 +25785,6 @@ module.exports = chalk;
 
 /***/ }),
 
-/***/ 844:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = rng;
-
-var _crypto = _interopRequireDefault(__webpack_require__(417));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function rng() {
-  return _crypto.default.randomBytes(16);
-}
-
-module.exports = exports.default;
-
-/***/ }),
-
 /***/ 850:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -30257,7 +29667,7 @@ const run = async () => {
         }
         const data = fs_1.default.readFileSync(path_1.default.resolve(cwd, '.github/classroom/autograding.json'));
         const json = JSON.parse(data.toString());
-        await runner_1.runAll(json.tests, cwd);
+        await runner_1.runAll(json, cwd);
     }
     catch (error) {
         // If there is any error we'll fail the action with the error message
@@ -31699,121 +31109,6 @@ module.exports = {
 	"yellowgreen": [154, 205, 50]
 };
 
-
-/***/ }),
-
-/***/ 893:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _rng = _interopRequireDefault(__webpack_require__(844));
-
-var _bytesToUuid = _interopRequireDefault(__webpack_require__(390));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// **`v1()` - Generate time-based UUID**
-//
-// Inspired by https://github.com/LiosK/UUID.js
-// and http://docs.python.org/library/uuid.html
-var _nodeId;
-
-var _clockseq; // Previous uuid creation time
-
-
-var _lastMSecs = 0;
-var _lastNSecs = 0; // See https://github.com/uuidjs/uuid for API details
-
-function v1(options, buf, offset) {
-  var i = buf && offset || 0;
-  var b = buf || [];
-  options = options || {};
-  var node = options.node || _nodeId;
-  var clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
-  // specified.  We do this lazily to minimize issues related to insufficient
-  // system entropy.  See #189
-
-  if (node == null || clockseq == null) {
-    var seedBytes = options.random || (options.rng || _rng.default)();
-
-    if (node == null) {
-      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
-      node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
-    }
-
-    if (clockseq == null) {
-      // Per 4.2.2, randomize (14 bit) clockseq
-      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
-    }
-  } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
-  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
-  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
-  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
-
-
-  var msecs = options.msecs !== undefined ? options.msecs : new Date().getTime(); // Per 4.2.1.2, use count of uuid's generated during the current clock
-  // cycle to simulate higher resolution clock
-
-  var nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
-
-  var dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
-
-  if (dt < 0 && options.clockseq === undefined) {
-    clockseq = clockseq + 1 & 0x3fff;
-  } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
-  // time interval
-
-
-  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
-    nsecs = 0;
-  } // Per 4.2.1.2 Throw error if too many uuids are requested
-
-
-  if (nsecs >= 10000) {
-    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
-  }
-
-  _lastMSecs = msecs;
-  _lastNSecs = nsecs;
-  _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
-
-  msecs += 12219292800000; // `time_low`
-
-  var tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
-  b[i++] = tl >>> 24 & 0xff;
-  b[i++] = tl >>> 16 & 0xff;
-  b[i++] = tl >>> 8 & 0xff;
-  b[i++] = tl & 0xff; // `time_mid`
-
-  var tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
-  b[i++] = tmh >>> 8 & 0xff;
-  b[i++] = tmh & 0xff; // `time_high_and_version`
-
-  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
-
-  b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
-
-  b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
-
-  b[i++] = clockseq & 0xff; // `node`
-
-  for (var n = 0; n < 6; ++n) {
-    b[i + n] = node[n];
-  }
-
-  return buf ? buf : (0, _bytesToUuid.default)(b);
-}
-
-var _default = v1;
-exports.default = _default;
-module.exports = exports.default;
 
 /***/ }),
 
