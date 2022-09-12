@@ -12252,7 +12252,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.runAll = exports.TestOutputError = exports.TestTimeoutError = exports.TestError = void 0;
+exports.runAll = void 0;
 const core = __importStar(__webpack_require__(470));
 const output_1 = __webpack_require__(52);
 const os = __importStar(__webpack_require__(87));
@@ -12260,49 +12260,34 @@ const chalk_1 = __importDefault(__webpack_require__(843));
 const fs_1 = __webpack_require__(747);
 const path_1 = __importDefault(__webpack_require__(622));
 const color = new chalk_1.default.Instance({ level: 1 });
-class TestError extends Error {
-    constructor(message) {
-        super(message);
-        Error.captureStackTrace(this, TestError);
-    }
-}
-exports.TestError = TestError;
-class TestTimeoutError extends TestError {
-    constructor(message) {
-        super(message);
-        Error.captureStackTrace(this, TestTimeoutError);
-    }
-}
-exports.TestTimeoutError = TestTimeoutError;
-class TestOutputError extends TestError {
-    constructor(message, expected, actual) {
-        super(`${message}\nExpected:\n${expected}\nActual:\n${actual}`);
-        this.expected = expected;
-        this.actual = actual;
-        Error.captureStackTrace(this, TestOutputError);
-    }
-}
-exports.TestOutputError = TestOutputError;
 const log = (text) => {
     process.stdout.write(text + os.EOL);
 };
+let resultPoints = {};
 exports.runAll = async (testConfig, cwd) => {
     let points = 0;
     let availablePoints = 0;
     // https://help.github.com/en/actions/reference/development-tools-for-github-actions#stop-and-start-log-commands-stop-commands
     log('::os autograding::');
     const fileValue = fs_1.readFileSync(path_1.default.join(cwd, testConfig.outputFile)).toString();
-    let gradeFiles = fs_1.readdirSync(cwd);
+    const classRoomPath = path_1.default.join(cwd, '.github/classroom/');
+    let gradeFiles = fs_1.readdirSync(classRoomPath);
     for (let i = 0; i < gradeFiles.length; i++) {
-        let scriptFilePath = path_1.default.join(cwd, gradeFiles[i]);
+        let scriptFilePath = path_1.default.join(classRoomPath, gradeFiles[i]);
         if (scriptFilePath.endsWith(".js")) {
             let scriptFile = await Promise.resolve().then(() => __importStar(require(scriptFilePath)));
-            for (let i = 0; i < scriptFile.points.length; i++) {
-                availablePoints += scriptFile.points[i].available;
-            }
             let result = scriptFile.judge(fileValue);
-            for (let i = 0; i < result.length; i++) {
-                points += result[i].points;
+            resultPoints = { resultPoints, ...result };
+            // output the result
+            for (let key in result) {
+                points += result[key][0];
+                availablePoints += result[key][1];
+                if (result[key][0] == result[key][1]) {
+                    log(color.green(`✅ ${key} pass`));
+                }
+                else {
+                    log(color.red(`❌ ${key} points ${result[key][0]}/${result[key][1]}`));
+                }
             }
         }
     }

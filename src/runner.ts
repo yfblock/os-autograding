@@ -9,47 +9,15 @@ const color = new chalk.Instance({level: 1})
 
 export type TestComparison = 'exact' | 'included' | 'regex'
 
-export interface Test {
-  readonly name: string
-  readonly contains?: string
-  readonly points: number
-}
-
 export interface TestConfig {
   readonly outputFile: string
-  readonly tests: Array<Test>
-}
-
-export class TestError extends Error {
-  constructor(message: string) {
-    super(message)
-    Error.captureStackTrace(this, TestError)
-  }
-}
-
-export class TestTimeoutError extends TestError {
-  constructor(message: string) {
-    super(message)
-    Error.captureStackTrace(this, TestTimeoutError)
-  }
-}
-
-export class TestOutputError extends TestError {
-  expected: string
-  actual: string
-
-  constructor(message: string, expected: string, actual: string) {
-    super(`${message}\nExpected:\n${expected}\nActual:\n${actual}`)
-    this.expected = expected
-    this.actual = actual
-
-    Error.captureStackTrace(this, TestOutputError)
-  }
 }
 
 const log = (text: string): void => {
   process.stdout.write(text + os.EOL)
 }
+
+let resultPoints = {};
 
 export const runAll = async (testConfig: TestConfig, cwd: string): Promise<void> => {
   let points = 0
@@ -60,18 +28,26 @@ export const runAll = async (testConfig: TestConfig, cwd: string): Promise<void>
 
   const fileValue = readFileSync(path.join(cwd, testConfig.outputFile)).toString()
 
-  let gradeFiles = readdirSync(cwd);
+  const classRoomPath = path.join(cwd, '.github/classroom/');
+  let gradeFiles = readdirSync(classRoomPath);
   for(let i = 0;i < gradeFiles.length; i++) {
-    let scriptFilePath = path.join(cwd, gradeFiles[i])
+    let scriptFilePath = path.join(classRoomPath, gradeFiles[i])
     if(scriptFilePath.endsWith(".js")) {
       let scriptFile = await import(scriptFilePath)
-      for(let i = 0; i < scriptFile.points.length; i++) {
-        availablePoints += scriptFile.points[i].available
-      }
       
       let result = scriptFile.judge(fileValue)
-      for(let i = 0; i < result.length; i++) {
-        points += result[i].points
+      resultPoints = {resultPoints, ...result}
+
+      // output the result
+      for(let key in result) {
+        points += result[key][0];
+        availablePoints += result[key][1];
+
+        if (result[key][0] == result[key][1]) {
+          log(color.green(`✅ ${key} pass`))
+        } else {
+          log(color.red(`❌ ${key} points ${result[key][0]}/${result[key][1]}`))
+        }
       }
     }
   }

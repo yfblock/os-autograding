@@ -17,18 +17,11 @@ describe('runAll', () => {
     const cwd = path.resolve(__dirname, '')
     const tests = {
       outputFile: 'test_file.txt',
-      tests: [
-        {
-          name: 'java',
-          contains: 'test file success',
-          points: 2,
-        },
-      ],
     }
 
     // Expect the points to be in the output
     const setOutputSpy = jest.spyOn(core, 'setOutput')
     await expect(runAll(tests, cwd)).resolves.not.toThrow()
-    expect(setOutputSpy).toHaveBeenCalledWith('Points', '2/2')
+    expect(setOutputSpy).toHaveBeenCalledWith('Points', '3/6')
   }, 10000)
 })
