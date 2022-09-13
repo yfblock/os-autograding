@@ -10,7 +10,8 @@ const color = new chalk.Instance({level: 1})
 export type TestComparison = 'exact' | 'included' | 'regex'
 
 export interface TestConfig {
-  readonly outputFile: string
+  readonly outputFile: string,
+  readonly externalFile?: string
 }
 
 const log = (text: string): void => {
@@ -27,10 +28,10 @@ export const runAll = async (testConfig: TestConfig, cwd: string): Promise<void>
   log('::os autograding::')
 
   const fileValue = readFileSync(path.join(cwd, testConfig.outputFile)).toString()
-
   const classRoomPath = path.join(cwd, '.github/classroom/');
   let gradeFiles = readdirSync(classRoomPath);
   for(let i = 0;i < gradeFiles.length; i++) {
+    if(gradeFiles[i] == testConfig.externalFile) continue;
     let scriptFilePath = path.join(classRoomPath, gradeFiles[i])
     if(scriptFilePath.endsWith(".js")) {
       let scriptFile = await import(scriptFilePath)
@@ -51,38 +52,14 @@ export const runAll = async (testConfig: TestConfig, cwd: string): Promise<void>
       }
     }
   }
-  // for (const test of testConfig.tests) {
-  //   availablePoints += test.points
-
-  //   if (test.contains) {
-  //     if (fileValue.indexOf(test.contains) >= 0) {
-  //       points += 2
-  //     }
-  //   }
-  // }
-  // for (const test of tests) {
-  //   try {
-  //     if (test.points) {
-  //       availablePoints += test.points
-  //     }
-  //     log(color.cyan(`📝 ${test.name}`))
-  //     log('')
-  //     await run(test, cwd)
-  //     log('')
-  //     log(color.green(`✅ ${test.name}`))
-  //     log(``)
-  //     if (test.points) {
-  //       points += test.points
-  //     }
-  //   } catch (error) {
-  //     failed = true
-  //     log('')
-  //     log(color.red(`❌ ${test.name}`))
-  //     // core.setFailed(error.message)
-  //   }
-  // }
 
   // Restart command processing
+
+  // handle external result
+  if (testConfig.externalFile) {
+    let externalFile = await import(path.join(classRoomPath, testConfig.externalFile));
+    externalFile.run(points, availablePoints, log);
+  }
 
   // Set the number of points
   const text = `Points ${points}/${availablePoints}`

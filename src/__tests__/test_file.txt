@@ -1,1 +1,134 @@
-test file success
+#### independent command test
+testcase busybox echo "#### independent command test" success
+testcase busybox ash -c exit success
+testcase busybox sh -c exit success
+testcase busybox clear success
+Thu Jan  1 00:00:00 UTC 1970
+testcase busybox date success
+Filesystem           1K-blocks      Used Available Use% Mounted on
+testcase busybox df success
+/aaa
+testcase busybox dirname /aaa/bbb success
+
+testcase busybox dmesg success
+0       ./var/tmp
+0       ./var
+0       ./bin
+0       ./sbin
+0       ./proc
+0       .
+testcase busybox du success
+2
+testcase busybox expr 1 + 1 success
+Hangup
+testcase busybox false success
+testcase busybox true success
+Hangup
+testcase busybox which ls success
+Linux
+testcase busybox uname success
+ 00:00:00 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00
+testcase busybox uptime success
+abcntestcase busybox printf "abcn" success
+PID   USER     TIME  COMMAND
+testcase busybox ps success
+/
+testcase busybox pwd success
+              total        used        free      shared  buff/cache   available
+Mem:              0           0           0           0           0           0
+-/+ buffers/cache:            0           0
+Swap:             0           0           0
+testcase busybox free success
+Sun Dec 31 00:00:00 1899  0.000000 seconds
+testcase busybox hwclock success
+testcase busybox kill 10 success
+bin
+busybox
+busybox_cmd.txt
+busybox_testcode.sh
+byte-test.sh
+cat
+cp
+date.lua
+echo
+file_io.lua
+lmbench_all
+lmbench_testcode.sh
+ls
+lua
+lua_testcode.sh
+max_min.lua
+proc
+pwd
+random.lua
+remove.lua
+round_num.lua
+sbin
+sh
+sin30.lua
+sort.lua
+strings.lua
+test.sh
+var
+testcase busybox ls success
+testcase busybox sleep 1 success
+#### file opration test
+testcase busybox echo "#### file opration test" success
+testcase busybox touch test.txt success
+testcase busybox echo "hello world" > test.txt success
+testcase busybox cat test.txt success
+testcase busybox cut -c 3 test.txt success
+0000000
+testcase busybox od test.txt success
+testcase busybox head test.txt success
+testcase busybox tail test.txt success
+testcase busybox hexdump -C test.txt success
+d41d8cd98f00b204e9800998ecf8427e  test.txt
+testcase busybox md5sum test.txt success
+testcase busybox echo "ccccccc" >> test.txt success
+testcase busybox echo "bbbbbbb" >> test.txt success
+testcase busybox echo "aaaaaaa" >> test.txt success
+testcase busybox echo "2222222" >> test.txt success
+testcase busybox echo "1111111" >> test.txt success
+testcase busybox echo "bbbbbbb" >> test.txt success
+testcase busybox sort test.txt | ./busybox uniq success
+  File: test.txt
+  Size: 0               Blocks: 0          IO Block: 0      weird file
+Device: 1h/1d   Inode: 1           Links: 0
+Access: (0000/?---------)  Uid: (    0/ UNKNOWN)   Gid: (    0/ UNKNOWN)
+Access: 1970-01-01 00:00:00.000000000 +0000
+Modify: 1970-01-01 00:00:00.000000000 +0000
+Change: 1970-01-01 00:00:00.000000000 +0000
+testcase busybox stat test.txt success
+testcase busybox strings test.txt success
+        0         0         0 test.txt
+testcase busybox wc test.txt success
+Hangup
+testcase busybox [ -f test.txt ] success
+testcase busybox more test.txt success
+rm: remove 'test.txt'? testcase busybox rm test.txt success
+testcase busybox mkdir test_dir success
+mv: can't rename 'test_dir': Network is down
+Hangup
+testcase busybox mv test_dir test success
+rmdir: 'test': No such file or directory
+Hangup
+testcase busybox rmdir test success
+echo "hello world" > test.txt
+grep hello busybox_cmd.txt
+testcase busybox grep hello busybox_cmd.txt success
+testcase busybox cp busybox_cmd.txt busybox_cmd.bak success
+rm: remove 'busybox_cmd.bak'? testcase busybox rm busybox_cmd.bak success
+./busybox_cmd.txt
+testcase busybox find -name "busybox_cmd.txt" success
+testcase lua date.lua success
+testcase lua file_io.lua success
+testcase lua max_min.lua success
+testcase lua random.lua success
+testcase lua remove.lua success
+testcase lua round_num.lua success
+testcase lua sin30.lua success
+testcase lua sort.lua success
+testcase lua strings.lua success
+panic: '正常关机'
+!TEST FINISH!

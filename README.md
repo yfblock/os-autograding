@@ -2,6 +2,7 @@
 
 ## 使用方法
 需要在github仓库中建立.github/classroom文件夹,在此文件夹中创建以.js为结尾的js文件，并提供judge接口，样例如下：
+目前是基于已有输出来进行判断
 ```javascript
 let points = {
     test1: [0, 2],
@@ -23,3 +24,23 @@ module.exports.judge = judge;
 points的key为单项测试名称，后面的数组，第一个数为得到的分数，第二个数为当前这个测试的分数。
 
 eg: 可以存在多个js文件来进行多个测试。
+
+需要在autograding里设置信息
+```json
+{
+    "outputFile": "qemu_output.txt", // 执行结果输出文件, 必选
+    "externalFile": "handleResult.js"   // 外置脚本，在成绩处理完毕时可做操作，可选，如果没有可删除此项
+}
+```
+handleResult.js 文件
+
+```javascript
+function run(grade, availableGrade, log) {
+    log(require("request"));
+    let githubCore = require('@actions/github');
+    log(githubCore)
+    log(grade, availableGrade);
+}
+
+module.exports.run = run;
+```
