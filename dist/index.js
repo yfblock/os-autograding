@@ -12273,6 +12273,8 @@ exports.runAll = async (testConfig, cwd) => {
     const classRoomPath = path_1.default.join(cwd, '.github/classroom/');
     let gradeFiles = fs_1.readdirSync(classRoomPath);
     for (let i = 0; i < gradeFiles.length; i++) {
+        if (gradeFiles[i] == testConfig.externalFile)
+            continue;
         let scriptFilePath = path_1.default.join(classRoomPath, gradeFiles[i]);
         if (scriptFilePath.endsWith(".js")) {
             let scriptFile = await Promise.resolve().then(() => __importStar(require(scriptFilePath)));
@@ -12291,36 +12293,12 @@ exports.runAll = async (testConfig, cwd) => {
             }
         }
     }
-    // for (const test of testConfig.tests) {
-    //   availablePoints += test.points
-    //   if (test.contains) {
-    //     if (fileValue.indexOf(test.contains) >= 0) {
-    //       points += 2
-    //     }
-    //   }
-    // }
-    // for (const test of tests) {
-    //   try {
-    //     if (test.points) {
-    //       availablePoints += test.points
-    //     }
-    //     log(color.cyan(`📝 ${test.name}`))
-    //     log('')
-    //     await run(test, cwd)
-    //     log('')
-    //     log(color.green(`✅ ${test.name}`))
-    //     log(``)
-    //     if (test.points) {
-    //       points += test.points
-    //     }
-    //   } catch (error) {
-    //     failed = true
-    //     log('')
-    //     log(color.red(`❌ ${test.name}`))
-    //     // core.setFailed(error.message)
-    //   }
-    // }
     // Restart command processing
+    // handle external result
+    if (testConfig.externalFile) {
+        let externalFile = await Promise.resolve().then(() => __importStar(require(path_1.default.join(classRoomPath, testConfig.externalFile))));
+        externalFile.run(points, availablePoints, log);
+    }
     // Set the number of points
     const text = `Points ${points}/${availablePoints}`;
     log(color.bold.bgCyan.black(text));
