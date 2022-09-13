@@ -35,9 +35,34 @@ eg: 可以存在多个js文件来进行多个测试。
 handleResult.js 文件
 
 ```javascript
-function run({points, availablePoints}, { log, github, request }) {
+async function run({points, availablePoints}, { log, github, axios }) {
+    // let github = require("@actions/github")
+    // let request = require("request");
+    // console.log(request);
+    // console.log(github);
+    // log("github actor: ", github.actor)
     log(github.actor);
-    log(request.post);
+    log(axios.get);
+    
+    const get = (url,params)=>{
+        params = params || {};
+        return new Promise((resolve,reject)=>{
+            // axiso 自带 get 和 post 方法
+            axios.get(url,{
+                params,
+            }).then(res=>{
+                if(res.data.status===0){
+                    resolve(res.data);
+                }else{
+                    alert(res.data.msg)
+                }
+            }).catch(error=>{
+                log('网络异常');
+            })
+        })
+    }
+    let data = await get("url");
+    console.log(data);
 }
 
 module.exports.run = run;

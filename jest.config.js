@@ -1,6 +1,6 @@
 // Setup nock to disable all external calls
-const nock = require('nock')
-nock.disableNetConnect()
+// const nock = require('nock')
+// nock.disableNetConnect()
 
 // By default, debug messages are written to the console which can make the test output confusing
 // Instead, bind to stdout and hide all debug messages

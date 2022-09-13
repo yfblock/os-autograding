@@ -18,8 +18,7 @@
   "dependencies": {
     "@actions/core": "^1.2.2",
     "@actions/github": "^2.1.1",
-    "@types/request": "^2.48.8",
-    "request": "^2.88.2",
+    "axios": "^0.27.2",
     "tree-kill": "^1.2.2",
     "uuid": "^7.0.1"
   },
