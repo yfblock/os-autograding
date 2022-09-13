@@ -35,11 +35,9 @@ eg: 可以存在多个js文件来进行多个测试。
 handleResult.js 文件
 
 ```javascript
-function run(grade, availableGrade, log) {
-    log(require("request"));
-    let githubCore = require('@actions/github');
-    log(githubCore)
-    log(grade, availableGrade);
+function run({points, availablePoints}, { log, github, request }) {
+    log(github.actor);
+    log(request.post);
 }
 
 module.exports.run = run;

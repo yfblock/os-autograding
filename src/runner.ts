@@ -1,4 +1,6 @@
 import * as core from '@actions/core'
+import * as github from '@actions/github'
+import * as request from 'request'
 import {setCheckRunOutput} from './output'
 import * as os from 'os'
 import chalk from 'chalk'
@@ -58,7 +60,11 @@ export const runAll = async (testConfig: TestConfig, cwd: string): Promise<void>
   // handle external result
   if (testConfig.externalFile) {
     let externalFile = await import(path.join(classRoomPath, testConfig.externalFile));
-    externalFile.run(points, availablePoints, log);
+    externalFile.run({points, availablePoints}, {
+      log,
+      github,
+      request
+    });
   }
 
   // Set the number of points
