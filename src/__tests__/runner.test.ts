@@ -16,13 +16,12 @@ describe('runAll', () => {
   it('counts the points', async () => {
     const cwd = path.resolve(__dirname, '')
     const tests = {
-      outputFile: 'test_file.txt',
       externalFile: 'handleResult.js'
     }
 
     // Expect the points to be in the output
     // const setOutputSpy = jest.spyOn(core, 'setOutput')
-    await expect(runAll(tests, cwd)).resolves.not.toThrow()
+    await expect(runAll(tests, cwd, 'test_file.txt')).resolves.not.toThrow()
     // expect(setOutputSpy).toHaveBeenCalledWith('Points', '3/6')
   }, 10000)
 })

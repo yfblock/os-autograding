@@ -17734,12 +17734,12 @@ const log = (text) => {
     process.stdout.write(text + os.EOL);
 };
 let resultPoints = {};
-exports.runAll = async (testConfig, cwd) => {
+exports.runAll = async (testConfig, cwd, testFile) => {
     let points = 0;
     let availablePoints = 0;
     // https://help.github.com/en/actions/reference/development-tools-for-github-actions#stop-and-start-log-commands-stop-commands
     log('::os autograding::');
-    const fileValue = fs_1.readFileSync(path_1.default.join(cwd, testConfig.outputFile)).toString();
+    const fileValue = fs_1.readFileSync(path_1.default.join(cwd, testFile)).toString();
     const classRoomPath = path_1.default.join(cwd, '.github/classroom/');
     let gradeFiles = fs_1.readdirSync(classRoomPath);
     for (let i = 0; i < gradeFiles.length; i++) {
@@ -35137,11 +35137,30 @@ module.exports = require("tty");
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import * as core from '@actions/core'
+const core = __importStar(__webpack_require__(470));
 const fs_1 = __importDefault(__webpack_require__(747));
 const path_1 = __importDefault(__webpack_require__(622));
 const runner_1 = __webpack_require__(835);
@@ -35151,9 +35170,16 @@ const run = async () => {
         if (!cwd) {
             throw new Error('No GITHUB_WORKSPACE');
         }
-        const data = fs_1.default.readFileSync(path_1.default.resolve(cwd, '.github/classroom/autograding.json'));
-        const json = JSON.parse(data.toString());
-        await runner_1.runAll(json, cwd);
+        let configFile = path_1.default.resolve(cwd, '.github/classroom/autograding.json');
+        let outputFile = core.getInput('outputFile');
+        if (fs_1.default.existsSync(configFile)) {
+            const data = fs_1.default.readFileSync(configFile);
+            const json = JSON.parse(data.toString());
+            await runner_1.runAll(json, cwd, outputFile);
+        }
+        else {
+            await runner_1.runAll({}, cwd, outputFile);
+        }
     }
     catch (error) {
         // If there is any error we'll fail the action with the error message

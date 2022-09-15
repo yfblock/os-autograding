@@ -12,7 +12,6 @@ const color = new chalk.Instance({level: 1})
 export type TestComparison = 'exact' | 'included' | 'regex'
 
 export interface TestConfig {
-  readonly outputFile: string,
   readonly externalFile?: string
 }
 
@@ -22,14 +21,14 @@ const log = (text: string): void => {
 
 let resultPoints = {};
 
-export const runAll = async (testConfig: TestConfig, cwd: string): Promise<void> => {
+export const runAll = async (testConfig: TestConfig, cwd: string, testFile: string): Promise<void> => {
   let points = 0
   let availablePoints = 0
 
   // https://help.github.com/en/actions/reference/development-tools-for-github-actions#stop-and-start-log-commands-stop-commands
   log('::os autograding::')
 
-  const fileValue = readFileSync(path.join(cwd, testConfig.outputFile)).toString()
+  const fileValue = readFileSync(path.join(cwd, testFile)).toString()
   const classRoomPath = path.join(cwd, '.github/classroom/');
   let gradeFiles = readdirSync(classRoomPath);
   for(let i = 0;i < gradeFiles.length; i++) {

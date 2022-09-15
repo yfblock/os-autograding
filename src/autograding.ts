@@ -1,4 +1,4 @@
-// import * as core from '@actions/core'
+import * as core from '@actions/core'
 import fs from 'fs'
 import path from 'path'
 import {runAll} from './runner'
@@ -10,10 +10,16 @@ const run = async (): Promise<void> => {
       throw new Error('No GITHUB_WORKSPACE')
     }
 
-    const data = fs.readFileSync(path.resolve(cwd, '.github/classroom/autograding.json'))
-    const json = JSON.parse(data.toString())
+    let configFile = path.resolve(cwd, '.github/classroom/autograding.json');
+    let outputFile = core.getInput('outputFile');
+    if(fs.existsSync(configFile)) {
+      const data = fs.readFileSync(configFile)
+      const json = JSON.parse(data.toString())
+      await runAll(json, cwd, outputFile)
+    } else {
+      await runAll({}, cwd, outputFile)
+    }
 
-    await runAll(json, cwd)
   } catch (error) {
     // If there is any error we'll fail the action with the error message
     console.error(error.message)
