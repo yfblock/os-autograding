@@ -9,6 +9,10 @@ inputs:
       by replacing this token with a user token which has write-access to your repository. 
       Note that the token will be accessible to all repository collaborators.
     default: ${{ github.token }}
+  outputFile:
+    description: >
+      outputFile used by custom script to compare and get grade.
+    default: output.txt
 runs:
   using: "node16"
   main: "./dist/index.js"
