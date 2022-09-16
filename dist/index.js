@@ -17755,10 +17755,12 @@ exports.runAll = async (testConfig, cwd, testFile) => {
                 points += result[key][0];
                 availablePoints += result[key][1];
                 if (result[key][0] == result[key][1]) {
-                    log(color.green(`✅ ${key} pass`));
+                    // log(color.green(`✅ ${key} pass`))
+                    core.setOutput('details', `✅ ${key} pass`);
                 }
                 else {
-                    log(color.red(`❌ ${key} points ${result[key][0]}/${result[key][1]}`));
+                    core.setOutput('details', `❌ ${key} points ${result[key][0]}/${result[key][1]}`);
+                    // log(color.red(`❌ ${key} points ${result[key][0]}/${result[key][1]}`))
                 }
             }
         }
