@@ -46,11 +46,13 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
         availablePoints += result[key][1];
 
         if (result[key][0] == result[key][1]) {
-          // log(color.green(`✅ ${key} pass`))
-          core.setOutput('details', `✅ ${key} pass`);
+          let text = `✅ ${key} pass`;
+          log(color.green(text))
+          core.setOutput('details', text);
         } else {
-          core.setOutput('details', `❌ ${key} points ${result[key][0]}/${result[key][1]}`);
-          // log(color.red(`❌ ${key} points ${result[key][0]}/${result[key][1]}`))
+          let text = `❌ ${key} points ${result[key][0]}/${result[key][1]}`;
+          core.setOutput('details', text);
+          log(color.red(text))
         }
       }
     }
