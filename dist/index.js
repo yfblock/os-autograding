@@ -17742,6 +17742,7 @@ exports.runAll = async (testConfig, cwd, testFile) => {
     const fileValue = fs_1.readFileSync(path_1.default.join(cwd, testFile)).toString();
     const classRoomPath = path_1.default.join(cwd, '.github/classroom/');
     let gradeFiles = fs_1.readdirSync(classRoomPath);
+    let details = "";
     for (let i = 0; i < gradeFiles.length; i++) {
         if (gradeFiles[i] == testConfig.externalFile)
             continue;
@@ -17757,17 +17758,20 @@ exports.runAll = async (testConfig, cwd, testFile) => {
                 if (result[key][0] == result[key][1]) {
                     let text = `✅ ${key} pass`;
                     log(color.green(text));
-                    core.setOutput('details', text);
+                    // core.setOutput('details', text);
+                    details += `${text}\n`;
                 }
                 else {
                     let text = `❌ ${key} points ${result[key][0]}/${result[key][1]}`;
-                    core.setOutput('details', text);
+                    // core.setOutput('details', text);
                     log(color.red(text));
+                    details += `${text}\n`;
                 }
             }
         }
     }
-    // Restart command processing
+    // Output details
+    core.setOutput('details', details);
     // handle external result
     if (testConfig.externalFile) {
         let externalFile = await Promise.resolve().then(() => __importStar(require(path_1.default.join(classRoomPath, testConfig.externalFile))));

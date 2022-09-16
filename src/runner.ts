@@ -31,6 +31,7 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
   const fileValue = readFileSync(path.join(cwd, testFile)).toString()
   const classRoomPath = path.join(cwd, '.github/classroom/');
   let gradeFiles = readdirSync(classRoomPath);
+  let details = "";
   for(let i = 0;i < gradeFiles.length; i++) {
     if(gradeFiles[i] == testConfig.externalFile) continue;
     let scriptFilePath = path.join(classRoomPath, gradeFiles[i])
@@ -48,17 +49,20 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
         if (result[key][0] == result[key][1]) {
           let text = `✅ ${key} pass`;
           log(color.green(text))
-          core.setOutput('details', text);
+          // core.setOutput('details', text);
+          details += `${text}\n`;
         } else {
           let text = `❌ ${key} points ${result[key][0]}/${result[key][1]}`;
-          core.setOutput('details', text);
+          // core.setOutput('details', text);
           log(color.red(text))
+          details += `${text}\n`;
         }
       }
     }
   }
 
-  // Restart command processing
+  // Output details
+  core.setOutput('details', details);
 
   // handle external result
   if (testConfig.externalFile) {
