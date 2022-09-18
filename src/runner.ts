@@ -30,7 +30,7 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
 
   const fileValue = readFileSync(path.join(cwd, testFile)).toString()
   // const classRoomPath = path.join(cwd, '.github/classroom/');
-  const scriptPath = path.join(cwd, core.getInput('scriptsPath'));
+  const scriptPath = path.join(cwd, core.getInput('scriptPath'));
   let gradeFiles = readdirSync(scriptPath);
   let details = "";
   for(let i = 0;i < gradeFiles.length; i++) {

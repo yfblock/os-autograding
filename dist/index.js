@@ -17741,7 +17741,7 @@ exports.runAll = async (testConfig, cwd, testFile) => {
     log('::os autograding::');
     const fileValue = fs_1.readFileSync(path_1.default.join(cwd, testFile)).toString();
     // const classRoomPath = path.join(cwd, '.github/classroom/');
-    const scriptPath = path_1.default.join(cwd, core.getInput('scriptsPath'));
+    const scriptPath = path_1.default.join(cwd, core.getInput('scriptPath'));
     let gradeFiles = fs_1.readdirSync(scriptPath);
     let details = "";
     for (let i = 0; i < gradeFiles.length; i++) {
