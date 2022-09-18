@@ -29,12 +29,13 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
   log('::os autograding::')
 
   const fileValue = readFileSync(path.join(cwd, testFile)).toString()
-  const classRoomPath = path.join(cwd, '.github/classroom/');
-  let gradeFiles = readdirSync(classRoomPath);
+  // const classRoomPath = path.join(cwd, '.github/classroom/');
+  const scriptPath = path.join(cwd, core.getInput('scriptsPath'));
+  let gradeFiles = readdirSync(scriptPath);
   let details = "";
   for(let i = 0;i < gradeFiles.length; i++) {
     if(gradeFiles[i] == testConfig.externalFile) continue;
-    let scriptFilePath = path.join(classRoomPath, gradeFiles[i])
+    let scriptFilePath = path.join(scriptPath, gradeFiles[i])
     if(scriptFilePath.endsWith(".js")) {
       let scriptFile = await import(scriptFilePath)
       
@@ -66,7 +67,7 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
 
   // handle external result
   if (testConfig.externalFile) {
-    let externalFile = await import(path.join(classRoomPath, testConfig.externalFile));
+    let externalFile = await import(path.join(scriptPath, testConfig.externalFile));
     await externalFile.run({points, availablePoints}, {
       log,
       github,

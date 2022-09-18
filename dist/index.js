@@ -17740,13 +17740,14 @@ exports.runAll = async (testConfig, cwd, testFile) => {
     // https://help.github.com/en/actions/reference/development-tools-for-github-actions#stop-and-start-log-commands-stop-commands
     log('::os autograding::');
     const fileValue = fs_1.readFileSync(path_1.default.join(cwd, testFile)).toString();
-    const classRoomPath = path_1.default.join(cwd, '.github/classroom/');
-    let gradeFiles = fs_1.readdirSync(classRoomPath);
+    // const classRoomPath = path.join(cwd, '.github/classroom/');
+    const scriptPath = path_1.default.join(cwd, core.getInput('scriptsPath'));
+    let gradeFiles = fs_1.readdirSync(scriptPath);
     let details = "";
     for (let i = 0; i < gradeFiles.length; i++) {
         if (gradeFiles[i] == testConfig.externalFile)
             continue;
-        let scriptFilePath = path_1.default.join(classRoomPath, gradeFiles[i]);
+        let scriptFilePath = path_1.default.join(scriptPath, gradeFiles[i]);
         if (scriptFilePath.endsWith(".js")) {
             let scriptFile = await Promise.resolve().then(() => __importStar(require(scriptFilePath)));
             let result = scriptFile.judge(fileValue);
@@ -17774,7 +17775,7 @@ exports.runAll = async (testConfig, cwd, testFile) => {
     core.setOutput('details', details);
     // handle external result
     if (testConfig.externalFile) {
-        let externalFile = await Promise.resolve().then(() => __importStar(require(path_1.default.join(classRoomPath, testConfig.externalFile))));
+        let externalFile = await Promise.resolve().then(() => __importStar(require(path_1.default.join(scriptPath, testConfig.externalFile))));
         await externalFile.run({ points, availablePoints }, {
             log,
             github,

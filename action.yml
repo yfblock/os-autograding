@@ -13,6 +13,11 @@ inputs:
     description: >
       outputFile used by custom script to compare and get grade.
     default: output.txt
+
+  scriptPath:
+    description: >
+      default scripts path
+    default: .github/classroom
 runs:
   using: "node16"
   main: "./dist/index.js"
