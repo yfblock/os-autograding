@@ -226,6 +226,7 @@ let points = {
 function judge(outputFile) {
     let current = '';
     let currentStatus = false;
+    outputFile = outputFile.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
     outputFile.trim().split('\n').forEach((value, index) => {
         if(value.indexOf("========== START ") == 0 && value.endsWith(" ==========")) {
             let title = value.replace("========== START ", "").replace(" ==========", "");
