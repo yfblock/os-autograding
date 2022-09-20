@@ -35,7 +35,7 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
 
   // const scriptPath = path.join(cwd, core.getInput('scriptPath'));
   let gradeFiles = readdirSync(scriptPath);
-  console.log(gradeFiles)
+
   let details = "";
   for(let i = 0;i < gradeFiles.length; i++) {
     if(gradeFiles[i] == testConfig.externalFile) continue;
@@ -46,7 +46,6 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
       let result = scriptFile.judge(fileValue)
       resultPoints = {resultPoints, ...result}
 
-      console.log(scriptFile);
       // output the result
       for(let key in result) {
         points += result[key][0];

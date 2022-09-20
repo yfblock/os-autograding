@@ -17744,7 +17744,6 @@ exports.runAll = async (testConfig, cwd, testFile, scriptsPath) => {
     const scriptPath = path_1.default.join(cwd, scriptsPath);
     // const scriptPath = path.join(cwd, core.getInput('scriptPath'));
     let gradeFiles = fs_1.readdirSync(scriptPath);
-    console.log(gradeFiles);
     let details = "";
     for (let i = 0; i < gradeFiles.length; i++) {
         if (gradeFiles[i] == testConfig.externalFile)
@@ -17754,7 +17753,6 @@ exports.runAll = async (testConfig, cwd, testFile, scriptsPath) => {
             let scriptFile = await Promise.resolve().then(() => __importStar(require(scriptFilePath)));
             let result = scriptFile.judge(fileValue);
             resultPoints = { resultPoints, ...result };
-            console.log(scriptFile);
             // output the result
             for (let key in result) {
                 points += result[key][0];
