@@ -17734,15 +17734,17 @@ const log = (text) => {
     process.stdout.write(text + os.EOL);
 };
 let resultPoints = {};
-exports.runAll = async (testConfig, cwd, testFile) => {
+exports.runAll = async (testConfig, cwd, testFile, scriptsPath) => {
     let points = 0;
     let availablePoints = 0;
     // https://help.github.com/en/actions/reference/development-tools-for-github-actions#stop-and-start-log-commands-stop-commands
     log('::os autograding::');
     const fileValue = fs_1.readFileSync(path_1.default.join(cwd, testFile)).toString();
     // const classRoomPath = path.join(cwd, '.github/classroom/');
-    const scriptPath = path_1.default.join(cwd, core.getInput('scriptPath'));
+    const scriptPath = path_1.default.join(cwd, scriptsPath);
+    // const scriptPath = path.join(cwd, core.getInput('scriptPath'));
     let gradeFiles = fs_1.readdirSync(scriptPath);
+    console.log(gradeFiles);
     let details = "";
     for (let i = 0; i < gradeFiles.length; i++) {
         if (gradeFiles[i] == testConfig.externalFile)
@@ -17752,6 +17754,7 @@ exports.runAll = async (testConfig, cwd, testFile) => {
             let scriptFile = await Promise.resolve().then(() => __importStar(require(scriptFilePath)));
             let result = scriptFile.judge(fileValue);
             resultPoints = { resultPoints, ...result };
+            console.log(scriptFile);
             // output the result
             for (let key in result) {
                 points += result[key][0];
@@ -35184,10 +35187,10 @@ const run = async () => {
         if (fs_1.default.existsSync(configFile)) {
             const data = fs_1.default.readFileSync(configFile);
             const json = JSON.parse(data.toString());
-            await runner_1.runAll(json, cwd, outputFile);
+            await runner_1.runAll(json, cwd, outputFile, core.getInput('.github/classroom/'));
         }
         else {
-            await runner_1.runAll({}, cwd, outputFile);
+            await runner_1.runAll({}, cwd, outputFile, core.getInput('.github/classroom/'));
         }
     }
     catch (error) {

@@ -21,7 +21,7 @@ describe('runAll', () => {
 
     // Expect the points to be in the output
     // const setOutputSpy = jest.spyOn(core, 'setOutput')
-    await expect(runAll(tests, cwd, 'test_file.txt')).resolves.not.toThrow()
+    await expect(runAll(tests, cwd, 'test_file.txt', '.github/classroom')).resolves.not.toThrow()
     // expect(setOutputSpy).toHaveBeenCalledWith('Points', '3/6')
   }, 10000)
 })

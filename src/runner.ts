@@ -21,7 +21,8 @@ const log = (text: string): void => {
 
 let resultPoints = {};
 
-export const runAll = async (testConfig: TestConfig, cwd: string, testFile: string): Promise<void> => {
+export const runAll = async (testConfig: TestConfig, cwd: string, testFile: string
+  , scriptsPath: string): Promise<void> => {
   let points = 0
   let availablePoints = 0
 
@@ -30,8 +31,11 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
 
   const fileValue = readFileSync(path.join(cwd, testFile)).toString()
   // const classRoomPath = path.join(cwd, '.github/classroom/');
-  const scriptPath = path.join(cwd, core.getInput('scriptPath'));
+  const scriptPath = path.join(cwd, scriptsPath);
+
+  // const scriptPath = path.join(cwd, core.getInput('scriptPath'));
   let gradeFiles = readdirSync(scriptPath);
+  console.log(gradeFiles)
   let details = "";
   for(let i = 0;i < gradeFiles.length; i++) {
     if(gradeFiles[i] == testConfig.externalFile) continue;
@@ -42,6 +46,7 @@ export const runAll = async (testConfig: TestConfig, cwd: string, testFile: stri
       let result = scriptFile.judge(fileValue)
       resultPoints = {resultPoints, ...result}
 
+      console.log(scriptFile);
       // output the result
       for(let key in result) {
         points += result[key][0];

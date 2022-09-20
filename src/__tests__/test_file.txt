@@ -1,35 +1,61 @@
+testcase lua date.lua success
+testcase lua file_io.lua success
+testcase lua max_min.lua success
+testcase lua random.lua success
+testcase lua remove.lua success
+testcase lua round_num.lua success
+testcase lua sin30.lua success
+testcase lua sort.lua success
+testcase lua strings.lua success
 #### independent command test
+sh: "####: unknown operand
 testcase busybox echo "#### independent command test" success
+sh: -c: unknown operand
 testcase busybox ash -c exit success
+sh: -c: unknown operand
 testcase busybox sh -c exit success
+bbb
+sh: /aaa/bbb: unknown operand
+testcase busybox basename /aaa/bbb success
+    January 1970
+Su Mo Tu We Th Fr Sa
+             1  2  3
+ 4  5  6  7  8  9 10
+11 12 13 14 15 16 17
+18 19 20 21 22 23 24
+25 26 27 28 29 30 31
+                     
+testcase busybox cal success
 testcase busybox clear success
-Thu Jan  1 00:00:00 UTC 1970
+Thu Jan  1 00:00:31 UTC 1970
 testcase busybox date success
 Filesystem           1K-blocks      Used Available Use% Mounted on
 testcase busybox df success
 /aaa
+sh: /aaa/bbb: unknown operand
 testcase busybox dirname /aaa/bbb success
-
 testcase busybox dmesg success
-0       ./var/tmp
-0       ./var
-0       ./bin
-0       ./sbin
-0       ./proc
-0       .
+0	./dev
+0	./lib
+0	./tmp
+0	./sbin
+0	./proc
+0	.
 testcase busybox du success
 2
+sh: 1: unknown operand
 testcase busybox expr 1 + 1 success
-Hangup
 testcase busybox false success
 testcase busybox true success
-Hangup
+/sbin/ls
+sh: ls: unknown operand
 testcase busybox which ls success
-Linux
+MaturinOS
 testcase busybox uname success
- 00:00:00 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00
+ 00:00:40 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00
 testcase busybox uptime success
-abcntestcase busybox printf "abcn" success
+abcnsh: "abcn": unknown operand
+testcase busybox printf "abcn" success
 PID   USER     TIME  COMMAND
 testcase busybox ps success
 /
@@ -41,94 +67,103 @@ Swap:             0           0           0
 testcase busybox free success
 Sun Dec 31 00:00:00 1899  0.000000 seconds
 testcase busybox hwclock success
+sh: 10: unknown operand
 testcase busybox kill 10 success
-bin
-busybox
-busybox_cmd.txt
-busybox_testcode.sh
-byte-test.sh
-cat
-cp
-date.lua
-echo
-file_io.lua
-lmbench_all
-lmbench_testcode.sh
-ls
-lua
-lua_testcode.sh
-max_min.lua
-proc
-pwd
-random.lua
-remove.lua
-round_num.lua
-sbin
-sh
-sin30.lua
-sort.lua
-strings.lua
-test.sh
-var
+busybox                 lua                     sbin
+busybox_cmd.txt         lua_testcode.sh         sin30.lua
+busybox_testcode.sh     max_min.lua             sort.lua
+date.lua                proc                    strings.lua
+dev                     random.lua              tcp_client
+dlopen_dso.so           redis-cli-static        tcp_client.c
+entry-dynamic.exe       redis-server            tcp_server
+entry-static.exe        redis.conf              tcp_server.c
+file_io.lua             remove.lua              test.sh
+lat_sig                 round_num.lua           tls_align_dso.so
+lib                     run-all.sh              tls_get_new-dtv_dso.so
+libc.so                 run-dynamic.sh          tls_init_dso.so
+lmbench_all             run-static.sh           tmp
+lmbench_testcode.sh     runtest.exe
 testcase busybox ls success
+sh: 1: unknown operand
 testcase busybox sleep 1 success
 #### file opration test
+sh: "####: unknown operand
 testcase busybox echo "#### file opration test" success
+sh: test.txt: unknown operand
 testcase busybox touch test.txt success
+busybox_testcode.sh: eval: line 1: can't create test.txt: File exists
+sh: "hello: unknown operand
 testcase busybox echo "hello world" > test.txt success
+sh: test.txt: unknown operand
 testcase busybox cat test.txt success
+sh: -c: unknown operand
 testcase busybox cut -c 3 test.txt success
 0000000
+sh: test.txt: unknown operand
 testcase busybox od test.txt success
+sh: test.txt: unknown operand
 testcase busybox head test.txt success
+sh: test.txt: unknown operand
 testcase busybox tail test.txt success
+sh: -C: unknown operand
 testcase busybox hexdump -C test.txt success
 d41d8cd98f00b204e9800998ecf8427e  test.txt
+sh: test.txt: unknown operand
 testcase busybox md5sum test.txt success
+busybox_testcode.sh: eval: line 1: can't create test.txt: nonexistent directory
+sh: "ccccccc": unknown operand
 testcase busybox echo "ccccccc" >> test.txt success
+busybox_testcode.sh: eval: line 1: can't create test.txt: nonexistent directory
+sh: "bbbbbbb": unknown operand
 testcase busybox echo "bbbbbbb" >> test.txt success
+busybox_testcode.sh: eval: line 1: can't create test.txt: nonexistent directory
+sh: "aaaaaaa": unknown operand
 testcase busybox echo "aaaaaaa" >> test.txt success
+busybox_testcode.sh: eval: line 1: can't create test.txt: nonexistent directory
+sh: "2222222": unknown operand
 testcase busybox echo "2222222" >> test.txt success
+busybox_testcode.sh: eval: line 1: can't create test.txt: nonexistent directory
+sh: "1111111": unknown operand
 testcase busybox echo "1111111" >> test.txt success
+busybox_testcode.sh: eval: line 1: can't create test.txt: nonexistent directory
+sh: "bbbbbbb": unknown operand
 testcase busybox echo "bbbbbbb" >> test.txt success
+sh: test.txt: unknown operand
 testcase busybox sort test.txt | ./busybox uniq success
   File: test.txt
-  Size: 0               Blocks: 0          IO Block: 0      weird file
-Device: 1h/1d   Inode: 1           Links: 0
-Access: (0000/?---------)  Uid: (    0/ UNKNOWN)   Gid: (    0/ UNKNOWN)
+  Size: 0         	Blocks: 0          IO Block: 0      regular empty file
+Device: 1h/1d	Inode: 1           Links: 1
+Access: (1060/----rw---T)  Uid: (    0/ UNKNOWN)   Gid: (    0/ UNKNOWN)
 Access: 1970-01-01 00:00:00.000000000 +0000
 Modify: 1970-01-01 00:00:00.000000000 +0000
 Change: 1970-01-01 00:00:00.000000000 +0000
+sh: test.txt: unknown operand
 testcase busybox stat test.txt success
+sh: test.txt: unknown operand
 testcase busybox strings test.txt success
         0         0         0 test.txt
+sh: test.txt: unknown operand
 testcase busybox wc test.txt success
-Hangup
+sh: -f: unknown operand
 testcase busybox [ -f test.txt ] success
+sh: test.txt: unknown operand
 testcase busybox more test.txt success
-rm: remove 'test.txt'? testcase busybox rm test.txt success
+sh: test.txt: unknown operand
+testcase busybox rm test.txt success
+sh: test_dir: unknown operand
 testcase busybox mkdir test_dir success
-mv: can't rename 'test_dir': Network is down
-Hangup
+sh: test_dir: unknown operand
 testcase busybox mv test_dir test success
-rmdir: 'test': No such file or directory
-Hangup
+sh: test: unknown operand
 testcase busybox rmdir test success
 echo "hello world" > test.txt
 grep hello busybox_cmd.txt
+sh: hello: unknown operand
 testcase busybox grep hello busybox_cmd.txt success
+sh: busybox_cmd.txt: unknown operand
 testcase busybox cp busybox_cmd.txt busybox_cmd.bak success
-rm: remove 'busybox_cmd.bak'? testcase busybox rm busybox_cmd.bak success
+sh: busybox_cmd.bak: unknown operand
+testcase busybox rm busybox_cmd.bak success
 ./busybox_cmd.txt
+sh: -name: unknown operand
 testcase busybox find -name "busybox_cmd.txt" success
-testcase lua date.lua success
-testcase lua file_io.lua success
-testcase lua max_min.lua success
-testcase lua random.lua success
-testcase lua remove.lua success
-testcase lua round_num.lua success
-testcase lua sin30.lua success
-testcase lua sort.lua success
-testcase lua strings.lua success
-panic: '正常关机'
-!TEST FINISH!
