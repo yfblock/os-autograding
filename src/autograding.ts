@@ -15,9 +15,9 @@ const run = async (): Promise<void> => {
     if(fs.existsSync(configFile)) {
       const data = fs.readFileSync(configFile)
       const json = JSON.parse(data.toString())
-      await runAll(json, cwd, outputFile, core.getInput('description'))
+      await runAll(json, cwd, outputFile, core.getInput('scriptPath'))
     } else {
-      await runAll({}, cwd, outputFile, core.getInput('description'))
+      await runAll({}, cwd, outputFile, core.getInput('scriptPath'))
     }
 
   } catch (error) {
