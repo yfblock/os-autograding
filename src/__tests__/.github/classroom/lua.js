@@ -11,14 +11,31 @@ let points = {
 }
 
 function judge(outputFile) {
-    outputFile.trim().split('\n').forEach((value, index) => {
-        if(value.indexOf("testcase lua")==0 && value.endsWith("success")) {
-            let name = value.replace('testcase', '').replace('success', '').trim();
+    while(true) {
+        let indexTestcase = outputFile.indexOf('testcase lua');
+        if(indexTestcase == -1) break;
+
+        // 搜索下一个节点 如果没有下一个 则在最后推出循环
+        let indexNextCase = outputFile.indexOf('testcase lua', indexTestcase + 1);
+
+        let judgeLine;
+        if(indexNextCase == -1) {
+            judgeLine = outputFile.substring(indexTestcase);
+        } else {
+            judgeLine = outputFile.substring(indexTestcase, indexNextCase);
+        }
+
+        let successIndex = judgeLine.indexOf("success");
+        if(successIndex >= 0) {
+            let name = judgeLine.substring('testcase'.length, successIndex).trim();
             if(points[name]) {
                 points[name][0] = points[name][1]
             }
         }
-    })
+
+        if(indexNextCase == -1) break;
+        outputFile = outputFile.substring(indexNextCase);
+    }
     return points;
 }
 
