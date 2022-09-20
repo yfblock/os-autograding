@@ -35187,10 +35187,10 @@ const run = async () => {
         if (fs_1.default.existsSync(configFile)) {
             const data = fs_1.default.readFileSync(configFile);
             const json = JSON.parse(data.toString());
-            await runner_1.runAll(json, cwd, outputFile, core.getInput('.github/classroom/'));
+            await runner_1.runAll(json, cwd, outputFile, core.getInput('description'));
         }
         else {
-            await runner_1.runAll({}, cwd, outputFile, core.getInput('.github/classroom/'));
+            await runner_1.runAll({}, cwd, outputFile, core.getInput('description'));
         }
     }
     catch (error) {
